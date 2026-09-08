@@ -1,0 +1,7 @@
+jdk:
+  - openjdk21
+before_install:
+  - sdk install java 21.0.2-tem || true
+  - sdk use java 21.0.2-tem || true
+install:
+  - ./gradlew :sceneview-core:publishToMavenLocal :sceneview:publishToMavenLocal :arsceneview:publishToMavenLocal -x test -x dokkaGenerate -x dokkaHtml --stacktrace

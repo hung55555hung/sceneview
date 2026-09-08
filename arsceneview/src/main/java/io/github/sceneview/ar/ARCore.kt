@@ -91,7 +91,13 @@ class ARCore(
                 createSession(context)
             }
         }
-        session?.resume()
+        // Catch FatalException / CameraNotAvailableException from Session.resume() so
+        // lifecycle ON_RESUME does not crash the Activity (Unable to resume activity).
+        try {
+            session?.resume()
+        } catch (exception: Exception) {
+            onException(exception)
+        }
     }
 
     /** Pauses the current ARCore session. */
