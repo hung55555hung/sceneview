@@ -86,15 +86,21 @@ class ARCore(
      * @param handler Permission handler, or `null` to skip permission checks.
      */
     fun resume(context: Context, handler: ARPermissionHandler?) {
-            if (session == null) {
-                if (handler == null || checkPermissionAndInstall(handler)) {
-                    createSession(context)
-                }
+        if (session == null) {
+            if (handler == null || checkPermissionAndInstall(handler)) {
+                createSession(context)
             }
+        }
+        // Still driven by Lifecycle ON_RESUME; catch here so Activity.performResume does not crash.
+        try {
+            // TEMP debug — remove after verifying onSessionFailed path.
             throw com.google.ar.core.exceptions.FatalException(
                 "DEBUG: forced Session.resume() failure"
             )
             session?.resume()
+        } catch (exception: Exception) {
+            onException(exception)
+        }
     }
 
     /** Pauses the current ARCore session. */
