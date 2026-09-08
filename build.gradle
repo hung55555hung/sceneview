@@ -38,7 +38,13 @@ subprojects {
     plugins.withId("com.vanniktech.maven.publish") {
         mavenPublishing {
             publishToMavenCentral()
-            signAllPublications()
+            // JitPack / local publishes have no GPG key — signing would fail with
+            // "no configured signatory". Only sign when a key is actually configured.
+            def canSign = project.findProperty("signing.keyId") != null ||
+                    System.getenv("ORG_GRADLE_PROJECT_signingKey") != null
+            if (canSign) {
+                signAllPublications()
+            }
         }
     }
 
