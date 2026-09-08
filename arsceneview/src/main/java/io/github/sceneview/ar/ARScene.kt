@@ -1008,7 +1008,14 @@ fun ARSceneView(
         arCore.create(context, permissionHandler, sessionFeatures)
 
         val observer = object : DefaultLifecycleObserver {
-            override fun onResume(owner: LifecycleOwner) { arCore.resume(context, permissionHandler) }
+            override fun onResume(owner: LifecycleOwner) {
+                try {
+                    arCore.resume(context, permissionHandler)
+                }catch (e: Exception) {
+
+                }
+
+            }
             override fun onPause(owner: LifecycleOwner) { arCore.pause() }
         }
         lifecycle.addObserver(observer)

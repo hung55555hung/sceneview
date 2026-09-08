@@ -86,7 +86,6 @@ class ARCore(
      * @param handler Permission handler, or `null` to skip permission checks.
      */
     fun resume(context: Context, handler: ARPermissionHandler?) {
-        try{
             if (session == null) {
                 if (handler == null || checkPermissionAndInstall(handler)) {
                     createSession(context)
@@ -96,10 +95,6 @@ class ARCore(
                 "DEBUG: forced Session.resume() failure"
             )
             session?.resume()
-        }catch(e: Exception){
-            onException(e)
-        }
-      
     }
 
     /** Pauses the current ARCore session. */
