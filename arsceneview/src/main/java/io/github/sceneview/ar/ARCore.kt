@@ -91,17 +91,11 @@ class ARCore(
                 createSession(context)
             }
         }
-        // Catch FatalException / CameraNotAvailableException from Session.resume() so
-        // lifecycle ON_RESUME does not crash the Activity (Unable to resume activity).
-        try {
-            // TEMP debug — remove after verifying catch → onSessionFailed (no Activity crash).
-            throw com.google.ar.core.exceptions.FatalException(
-                "DEBUG: forced Session.resume() failure"
-            )
-            session?.resume()
-        } catch (exception: Exception) {
-            onException(exception)
-        }
+        // TEMP debug — no try/catch: FatalException will crash Activity.resume.
+        throw com.google.ar.core.exceptions.FatalException(
+            "DEBUG: forced Session.resume() failure"
+        )
+        session?.resume()
     }
 
     /** Pauses the current ARCore session. */
